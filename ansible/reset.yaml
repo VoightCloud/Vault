@@ -1,0 +1,14 @@
+# This will delete the Hashicorp Vault
+
+- name: Reset Vault
+  hosts: localhost
+  var:
+    namespace: security
+
+  tasks:
+    - name: Uninstall Vault
+      command: helm uninstall -n "{{ namespace }}" vault
+      delegate_to: localhost
+
+    - name: Uninstall PVC
+      command: kubectl delete -n "{{ namespace }}" persistentvolumeclaim/data-vault-0
