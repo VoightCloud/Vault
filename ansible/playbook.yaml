@@ -1,6 +1,8 @@
 - name: Install Hashicorp Vault
   hosts: localhost
-  var:
+  vars_files:
+    - files/admin-values.yaml
+  vars:
     namespace: security
 
   tasks:
@@ -34,6 +36,32 @@
         dest: /tmp/
       delegate_to: localhost
 
+    - name: Copy Certificate chart
+      copy:
+        src: files/global
+        dest: /tmp/
+      delegate_to: localhost
+
+    - name: Copy certificate key
+      copy:
+        src: files/admin-values.yaml
+        dest: /tmp/
+      delegate_to: localhost
+
+    - name: Copy Certificate file
+      copy:
+        src: files/voight.org.crt
+        dest: /tmp/
+      delegate_to: localhost
+
+    - name: Add Voight.org Certificates
+      command: >
+        helm upgrade -i -n "{{ namespace }}" certificates /tmp/global
+        --set namespace="{{ namespace }}"
+        --set-file tls.crt=/tmp/voight.org.crt
+        --set tls.key='{{ voightorgkey }}'
+      delegate_to: localhost
+
     - name: Add Hashicorp Repo
       community.kubernetes.helm_repository:
         name: hashicorp
@@ -41,8 +69,8 @@
       delegate_to: localhost
 
     - name: Apply Vault
-      command: helm install -n "{{ namespace }}" vault hashicorp/vault -f /tmp/vault-values.yaml
+      command: helm upgrade -i -n "{{ namespace }}" vault hashicorp/vault -f /tmp/vault-values.yaml
       delegate_to: localhost
 
     - name: Initialize Vault
-      command: echo "When the pod comes up, run:\nkubectl exec -it -n security vault-0 -- vault opertor init"
+      command: echo "When the pod comes up, run:\nkubectl exec -it -n security vault-0 -- vault operator init"

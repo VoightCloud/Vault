@@ -1,0 +1,7 @@
+tls:
+  crt: certificate
+  key: key
+ca:
+  crt: certificate
+  key: key
+namespace: default
