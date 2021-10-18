@@ -1,5 +1,5 @@
-def labelArm = "mvn-jdk-build-arm64${UUID.randomUUID().toString()}"
-def labelx86_64 = "mvn-jdk-build-x86_64${UUID.randomUUID().toString()}"
+def labelArm = "docker-ansible${UUID.randomUUID().toString()}"
+def labelx86_64 = "docker-ansible${UUID.randomUUID().toString()}"
 
 
 stage('Build') {
@@ -17,7 +17,7 @@ stage('Build') {
             ],
             volumes: [
                     hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-                    hostPathVolume(hostPath: '.', mountPath: '/ansible/playbooks')
+                    hostPathVolume(hostPath: "$(pwd)", mountPath: '/ansible/playbooks')
             ],
             nodeSelector: 'kubernetes.io/arch=arm64'
     ) {
@@ -60,7 +60,7 @@ stage('Build') {
             ],
             volumes: [
                     hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-                    hostPathVolume(hostPath: '.', mountPath: '/ansible/playbooks')
+                    hostPathVolume(hostPath: "$(pwd)", mountPath: '/ansible/playbooks')
             ],
             nodeSelector: 'kubernetes.io/arch=amd64'
     ) {
