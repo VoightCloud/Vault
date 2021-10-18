@@ -38,8 +38,8 @@ stage('Build') {
             }
             stage('Push') {
                 container('ansible') {
-                    withCredentials([string(credentialsId: 'ansible-vault-pwd', variable: 'ansible-vault-pwd')]) {
-                        sh "sh -c 'echo ${ansible-vault-pwd} > vaultpwd'"
+                    withCredentials([string(credentialsId: 'ansible-vault-pwd', variable: 'ansiblevaultpwd')]) {
+                        sh "sh -c 'echo ${ansiblevaultpwd} > vaultpwd'"
                         sh "ansible-playbook --vault-pwd-file=./vaultpwd --version"
                         sh "rm vaultpwd"
                     }
@@ -83,9 +83,9 @@ stage('Build') {
             }
             stage('Push') {
                 container('ansible') {
-                    withCredentials([string(credentialsId: 'ansible-vault-pwd', variable: 'ansible-vault-pwd')]) {
-                        sh "sh -c 'echo ${ansible-vault-pwd} > vaultpwd'"
-                        sh "--version"
+                    withCredentials([string(credentialsId: 'ansible-vault-pwd', variable: 'ansiblevaultpwd')]) {
+                        sh "sh -c 'echo ${ansiblevaultpwd} > vaultpwd'"
+                        sh "ansible-playbook --vault-pwd-file=./vaultpwd --version"
                         sh "rm vaultpwd"
                     }
                 }
