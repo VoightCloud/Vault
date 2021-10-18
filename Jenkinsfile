@@ -17,9 +17,7 @@ stage('Build') {
             ],
             volumes: [
                     hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-                    hostPathVolume(hostPath: '/etc/ssl/certs', mountPath: '/certs/ca'),
-                    hostPathVolume(hostPath: '/etc/ssl/certs', mountPath: '/certs/server'),
-                    hostPathVolume(hostPath: '/etc/ssl/certs', mountPath: '/certs/client')
+                    hostPathVolume(hostPath: '.', mountPath: '/ansible/playbooks')
             ],
             nodeSelector: 'kubernetes.io/arch=arm64'
     ) {
@@ -62,9 +60,7 @@ stage('Build') {
             ],
             volumes: [
                     hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-                    hostPathVolume(hostPath: '/etc/ssl/certs', mountPath: '/certs/ca'),
-                    hostPathVolume(hostPath: '/etc/ssl/certs', mountPath: '/certs/client'),
-                    hostPathVolume(hostPath: '/etc/ssl/certs', mountPath: '/certs/server')
+                    hostPathVolume(hostPath: '.', mountPath: '/ansible/playbooks')
             ],
             nodeSelector: 'kubernetes.io/arch=amd64'
     ) {
@@ -85,7 +81,7 @@ stage('Build') {
                 container('ansible') {
                     withCredentials([string(credentialsId: 'ansible-vault-pwd', variable: 'ansiblevaultpwd')]) {
                         sh "sh -c 'echo ${ansiblevaultpwd} > vaultpwd'"
-                        sh "ansible-playbook --vault-pwd-file=./vaultpwd --version"
+                        sh "ansible-playbook --vault-pwd-file=./vaultpwd -e namespace=blah ./playbook.yaml"
                         sh "rm vaultpwd"
                     }
                 }

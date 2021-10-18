@@ -3,7 +3,7 @@
   vars_files:
     - files/admin-values.yaml
   vars:
-    namespace: security
+    namespace: blahblahblah
 
   tasks:
     - name: Install Openshift Python Library
@@ -32,7 +32,7 @@
 
     - name: Copy Customization
       copy:
-        src: ../vault-values.yaml
+        src: vault-values.yaml
         dest: /tmp/
       delegate_to: localhost
 
