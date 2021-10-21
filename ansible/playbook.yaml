@@ -10,9 +10,6 @@
     - name: Install Openshift Python Library
       command: pip3 install openshift
 
-    - name: Install Ansible Galaxy Kubernetes
-      command: ansible-galaxy collection install community.kubernetes
-
     - name: Create security namespace
       community.kubernetes.k8s:
         name: "{{ namespace }}"

@@ -6,7 +6,7 @@ stage('Build') {
             label: label,
             containers: [
                     containerTemplate(name: 'ansible',
-                            image: 'voight/ansible-k8s:1.0',
+                            image: 'voight/ansible-k8s:1.1',
                             alwaysPullImage: false,
                             ttyEnabled: true,
                             command: 'cat',
@@ -36,6 +36,7 @@ stage('Build') {
                     withCredentials([string(credentialsId: 'ansible-vault-pwd', variable: 'ansiblevaultpwd')]) {
                         withCredentials([file(credentialsId: 'kubeconfig', variable: 'MY_KUBECONFIG')]) {
                             dir("ansible") {
+                                sh 'env'
                                 sh 'cp $MY_KUBECONFIG /root/.kube/config'
                                 sh "cat /root/.kube/config"
                                 sh "sh -c 'echo ${ansiblevaultpwd} > vaultpwd'"
