@@ -1,10 +1,5 @@
 GString label = "docker-ansible${UUID.randomUUID().toString()}"
-environment {
-    // The MY_KUBECONFIG environment variable will be assigned
-    // the value of a temporary file.  For example:
-    //   /home/user/.jenkins/workspace/cred_test@tmp/secretFiles/546a5cf3-9b56-4165-a0fd-19e2afe6b31f/kubeconfig.txt
-    MY_KUBECONFIG = credentials('kubeconfig')
-}
+
 stage('Build') {
 
     podTemplate(
@@ -41,11 +36,13 @@ stage('Build') {
                     sh 'env'
                     sh 'ls -l'
                     withCredentials([string(credentialsId: 'ansible-vault-pwd', variable: 'ansiblevaultpwd')]) {
-                        dir("ansible") {
-                            sh "sh -c 'echo ${MY_KUBECONFIG} > /root/.kube/config"
-                            sh "sh -c 'echo ${ansiblevaultpwd} > vaultpwd'"
-                            sh "ansible-playbook --vault-password-file=./vaultpwd ./playbook.yaml"
-                            sh "rm vaultpwd"
+                        withCredentials([string(credentialsId: 'kubeconfig', variable: 'MY_KUBECONFIG')]) {
+                            dir("ansible") {
+                                sh "sh -c 'echo ${MY_KUBECONFIG} > /root/.kube/config"
+                                sh "sh -c 'echo ${ansiblevaultpwd} > vaultpwd'"
+                                sh "ansible-playbook --vault-password-file=./vaultpwd ./playbook.yaml"
+                                sh "rm vaultpwd"
+                            }
                         }
                     }
                 }
