@@ -1,8 +1,6 @@
 GString label = "docker-ansible${UUID.randomUUID().toString()}"
-def cwd=env.WORKSPACE
 
 stage('Build') {
-    sh "env"
 
     podTemplate(
             label: label,
@@ -17,8 +15,7 @@ stage('Build') {
                     containerTemplate(name: 'jnlp', image: 'jenkins/inbound-agent:latest-jdk11', args: '${computer.jnlpmac} ${computer.name}'),
             ],
             volumes: [
-                    hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-                    hostPathVolume(hostPath: cwd, mountPath: '/ansible/playbooks')
+                    hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
             ]
     ) {
         node(label) {
@@ -36,6 +33,7 @@ stage('Build') {
             }
             stage('Push') {
                 container('ansible') {
+                    sh 'env'
                     withCredentials([string(credentialsId: 'ansible-vault-pwd', variable: 'ansiblevaultpwd')]) {
                         sh "sh -c 'echo ${ansiblevaultpwd} > vaultpwd'"
                         sh "ansible-playbook --vault-pwd-file=./vaultpwd --version"
