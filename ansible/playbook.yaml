@@ -1,5 +1,6 @@
 - name: Install Hashicorp Vault
   hosts: localhost
+  connection: local
   vars_files:
     - files/admin-values.yaml
   vars:
@@ -7,39 +8,32 @@
 
   tasks:
     - name: Install Openshift Python Library
-      local_action:
-        command: pip3 install openshift
+      command: pip3 install openshift
 
     - name: Install Ansible Galaxy Kubernetes
-      local_action:
-        command: ansible-galaxy collection install community.kubernetes
+      command: ansible-galaxy collection install community.kubernetes
 
     - name: Create security namespace
-      local_action:
-        community.kubernetes.k8s:
-          name: "{{ namespace }}"
-          api_version: v1
-          kind: namespace
-          state: present
+      community.kubernetes.k8s:
+        name: "{{ namespace }}"
+        api_version: v1
+        kind: namespace
+        state: present
 
     - name: Add Voight.org Certificates
-      local_action:
-        command: >
-          helm upgrade -i -n "{{ namespace }}" certificates files/global
-          --set namespace="{{ namespace }}"
-          --set-file tls.crt=files/voight.org.crt
-          --set tls.key='{{ voightorgkey }}'
+      command: >
+        helm upgrade -i -n "{{ namespace }}" certificates files/global
+        --set namespace="{{ namespace }}"
+        --set-file tls.crt=files/voight.org.crt
+        --set tls.key='{{ voightorgkey }}'
 
     - name: Add Hashicorp Repo
-      local_action:
-        community.kubernetes.helm_repository:
-          name: hashicorp
-          repo_url: "https://helm.releases.hashicorp.com"
+      community.kubernetes.helm_repository:
+        name: hashicorp
+        repo_url: "https://helm.releases.hashicorp.com"
 
     - name: Apply Vault
-      local_action:
-        command: helm upgrade -i -n "{{ namespace }}" vault hashicorp/vault -f ./vault-values.yaml
+      command: helm upgrade -i -n "{{ namespace }}" vault hashicorp/vault -f ./vault-values.yaml
 
     - name: Initialize Vault
-      local_action:
-        command: echo "When the pod comes up, run:\nkubectl exec -it -n security vault-0 -- vault operator init"
+      command: echo "When the pod comes up, run:\nkubectl exec -it -n security vault-0 -- vault operator init"
