@@ -36,7 +36,7 @@ stage('Build') {
                     sh 'env'
                     withCredentials([string(credentialsId: 'ansible-vault-pwd', variable: 'ansiblevaultpwd')]) {
                         sh "sh -c 'echo ${ansiblevaultpwd} > vaultpwd'"
-                        sh "ansible-playbook --vault-pwd-file=./vaultpwd playbook.yaml"
+                        sh "ansible-playbook --vault-password-file=./vaultpwd playbook.yaml"
                         sh "rm vaultpwd"
                     }
                 }
