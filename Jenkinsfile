@@ -15,8 +15,7 @@ stage('Build') {
                     containerTemplate(name: 'jnlp', image: 'jenkins/inbound-agent:latest-jdk11', args: '${computer.jnlpmac} ${computer.name}'),
             ],
             volumes: [
-                    hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-                    hostPathVolume(hostPath: env.PWD, mountPath: '/ansible/playbooks')
+                    hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
             ]
     ) {
         node(label) {
@@ -37,7 +36,7 @@ stage('Build') {
                     sh 'env'
                     withCredentials([string(credentialsId: 'ansible-vault-pwd', variable: 'ansiblevaultpwd')]) {
                         sh "sh -c 'echo ${ansiblevaultpwd} > vaultpwd'"
-                        sh "ansible-playbook --vault-pwd-file=./vaultpwd --version"
+                        sh "ansible-playbook --vault-pwd-file=./vaultpwd playbook.yaml"
                         sh "rm vaultpwd"
                     }
                 }
