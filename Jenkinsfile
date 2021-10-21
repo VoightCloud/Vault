@@ -1,5 +1,6 @@
 GString label = "docker-ansible${UUID.randomUUID().toString()}"
 def cwd=env.WORKSPACE
+sh "env"
 
 stage('Build') {
     podTemplate(
