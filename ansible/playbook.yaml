@@ -16,6 +16,7 @@
         api_version: v1
         kind: namespace
         state: present
+        username: kubernetes-admin
 
     - name: Add Voight.org Certificates
       command: >
