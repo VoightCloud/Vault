@@ -15,7 +15,7 @@ stage('Build') {
             ],
             volumes: [
                     hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-                    hostPathVolume(hostPath: ${env.WORKSPACE}, mountPath: '/ansible/playbooks')
+                    hostPathVolume(hostPath: env.WORKSPACE, mountPath: '/ansible/playbooks')
             ]
     ) {
         node(label) {
