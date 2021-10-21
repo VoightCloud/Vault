@@ -1,4 +1,5 @@
 GString label = "docker-ansible${UUID.randomUUID().toString()}"
+def cwd=${WORKSPACE}
 
 stage('Build') {
     podTemplate(
@@ -15,7 +16,7 @@ stage('Build') {
             ],
             volumes: [
                     hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-                    hostPathVolume(hostPath: env.WORKSPACE, mountPath: '/ansible/playbooks')
+                    hostPathVolume(hostPath: cwd, mountPath: '/ansible/playbooks')
             ]
     ) {
         node(label) {
