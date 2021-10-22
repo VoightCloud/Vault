@@ -7,7 +7,7 @@ stage('Build') {
             serviceAccount: "jenkins-build",
             containers: [
                     containerTemplate(name: 'ansible',
-                            image: 'voight/ansible-k8s:1.1',
+                            image: 'voight/ansible-k8s:1.2',
                             alwaysPullImage: false,
                             ttyEnabled: true,
                             command: 'cat',

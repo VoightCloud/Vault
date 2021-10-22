@@ -7,9 +7,6 @@
     namespace: build
 
   tasks:
-#    - name: Install Openshift Python Library
-#      command: pip3 install openshift
-
     - name: Create security namespace
       community.kubernetes.k8s:
         name: "{{ namespace }}"
