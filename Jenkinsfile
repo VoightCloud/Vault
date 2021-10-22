@@ -4,7 +4,7 @@ stage('Build') {
 
     podTemplate(
             label: label,
-            serviceAccount: "system:serviceaccount:build:builder",
+            serviceAccount: "build:jenkins-builder",
             containers: [
                     containerTemplate(name: 'ansible',
                             image: 'voight/ansible-k8s:1.1',
