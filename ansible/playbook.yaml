@@ -11,7 +11,7 @@
 #      command: pip3 install openshift
 
     - name: Create security namespace
-      kubernetes.core:
+      community.kubernetes.k8s:
         name: "{{ namespace }}"
         api_version: v1
         kind: namespace
