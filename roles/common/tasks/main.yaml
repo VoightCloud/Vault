@@ -13,8 +13,9 @@
     release_namespace: "{{ namespace }}"
     release_values:
       namespace: "{{ namespace }}"
-      tls.key: "{{ voightorgkey }}"
-      tls.crt: "{{ voightorgcrt }}"
+      tls:
+        - key: "{{ voightorgkey }}"
+        - crt: "{{ voightorgcrt }}"
 
 
 - name: Add Hashicorp Repo
