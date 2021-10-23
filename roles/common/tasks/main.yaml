@@ -16,11 +16,6 @@
       tls.key: "{{ voightorgkey }}"
       tls.crt: "{{ voightorgcrt }}"
 
-#  command: >
-#    helm upgrade -i -n "{{ namespace }}" certificates files/global
-#    --set namespace="{{ namespace }}"
-#    --set-file tls.crt="{{ voightorgcrt }}"
-#    --set tls.key='{{ voightorgkey }}'
 
 - name: Add Hashicorp Repo
   community.kubernetes.helm_repository:
@@ -37,8 +32,6 @@
     values:
       ui.serviceType: "NodePort"
       server.service.type: "NodePort"
-
-#  command: helm upgrade -i -n "{{ namespace }}" vaultbuild hashicorp/vault -f ./vault-values.yaml
 
 - name: Initialize Vault
   command: echo "When the pod comes up, run:\nkubectl exec -it -n security vault-0 -- vault operator init"
