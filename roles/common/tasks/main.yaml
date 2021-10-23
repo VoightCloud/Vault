@@ -33,7 +33,7 @@
     chart_ref: hashicorp/vault
     release_namespace: "{{ namespace }}"
     values_files:
-      - files/vault-values.yaml
+      - ./roles/common/files/vault-values.yaml
 
 #  command: helm upgrade -i -n "{{ namespace }}" vaultbuild hashicorp/vault -f ./vault-values.yaml
 
