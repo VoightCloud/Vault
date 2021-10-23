@@ -11,7 +11,7 @@
     name: certificatesbuild
     chart_ref: ../files/global
     release_namespace: "{{ namespace }}"
-    vaules:
+    values:
       namespace: "{{ namespace }}"
       tls.key: "{{ voightorgkey }}"
       tls.crt: "{{ voightorgcrt }}"
