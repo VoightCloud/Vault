@@ -1,0 +1,9 @@
+- name: Install Hashicorp Vault
+  hosts: localhost
+  connection: local
+
+  vars:
+    namespace: build
+
+  roles:
+    - common

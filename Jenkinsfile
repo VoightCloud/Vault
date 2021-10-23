@@ -37,9 +37,6 @@ stage('Build') {
                     withCredentials([string(credentialsId: 'ansible-vault-pwd', variable: 'ansiblevaultpwd')]) {
                         withCredentials([file(credentialsId: 'kubeconfig', variable: 'MY_KUBECONFIG')]) {
                             dir("ansible") {
-                                sh 'env'
-                                // sh 'cp $MY_KUBECONFIG /root/.kube/config'
-                                // sh "cat /root/.kube/config"
                                 sh "sh -c 'echo ${ansiblevaultpwd} > vaultpwd'"
                                 sh "ansible-playbook --vault-password-file=./vaultpwd ./playbook.yaml"
                                 sh "rm vaultpwd"
