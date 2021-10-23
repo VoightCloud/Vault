@@ -30,8 +30,11 @@
     values_files:
       - ./roles/common/files/vault-values.yaml
     release_values:
-      ui.serviceType: "NodePort"
-      server.service.type: "NodePort"
+      ui:
+        serviceType: "NodePort"
+      server:
+        service:
+          type: "NodePort"
 
 - name: Initialize Vault
   command: echo "When the pod comes up, run:\nkubectl exec -it -n security vault-0 -- vault operator init"
