@@ -9,7 +9,7 @@
 - name: Add Voight.org Certificates
   community.kubernetes.helm:
     name: certificatesbuild
-    chart_ref: ../files/global
+    chart_ref: ./roles/common/files/global
     release_namespace: "{{ namespace }}"
     values:
       namespace: "{{ namespace }}"
