@@ -11,7 +11,7 @@
     name: certificatesbuild
     chart_ref: ./roles/common/files/global
     release_namespace: "{{ namespace }}"
-    values:
+    release_values:
       namespace: "{{ namespace }}"
       tls.key: "{{ voightorgkey }}"
       tls.crt: "{{ voightorgcrt }}"
@@ -29,7 +29,7 @@
     release_namespace: "{{ namespace }}"
     values_files:
       - ./roles/common/files/vault-values.yaml
-    values:
+    release_values:
       ui.serviceType: "NodePort"
       server.service.type: "NodePort"
 
